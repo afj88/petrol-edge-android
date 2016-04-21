@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "petrol-edge",
+    "project_number": "384256532814",
+    "name": "Petrol Edge"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384256532814:android:186959d2abaf39d4",
+        "client_id": "android:it.petroledge.spotthatcar",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "it.petroledge.spotthatcar",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384256532814-g3vst2hvdfie72n66atofdq852mie1eo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.petroledge.spotthatcar",
+            "certificate_hash": "D450276C92B40C893443C659B81CD4B03800310B"
+          }
+        },
+        {
+          "client_id": "384256532814-ansha2le056os9jmqsmbc35e5ktahgp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
