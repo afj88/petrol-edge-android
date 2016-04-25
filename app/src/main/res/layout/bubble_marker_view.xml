@@ -1,14 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bubble_marker"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:id="@+id/bubble_marker_image_view"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_gravity="center_horizontal"
-        android:contentDescription="@null"
-        android:src="@drawable/bubble" />
-</FrameLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="100dp">
+    <android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_widthPercent="100%"
+        app:layout_heightPercent="100%"
+        android:background="@drawable/border" >
+        <!--suppress AndroidDomInspection -->
+        <ImageView
+            android:id="@+id/info_window_photo_holder"
+            app:layout_widthPercent="83%"
+            app:layout_heightPercent="70%"
+            app:layout_aspectRatio="100%"
+            android:scaleType="centerCrop"
+            app:layout_marginTopPercent="9.63%"
+            app:layout_marginLeftPercent="8.84%"
+            android:background="@drawable/border"/>
+        <!-- android:src="@drawable/common_google_signin_btn_icon_light_normal" -->
+        <ImageView
+            android:id="@+id/bubble_marker_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bubble_extra_small"
+            android:background="@drawable/border"/>
+        <ProgressBar
+            android:id="@+id/info_window_loader"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </android.support.percent.PercentRelativeLayout>
+</RelativeLayout>
