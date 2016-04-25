@@ -1,6 +1,9 @@
 package it.petroledge.spotthatcar.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,11 +22,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
 
 import it.petroledge.spotthatcar.R;
 import it.petroledge.spotthatcar.entity.CarEntity;
 import it.petroledge.spotthatcar.ui.fragment.GalleryFragment;
 import it.petroledge.spotthatcar.ui.fragment.ExtendedMapFragment;
+import it.petroledge.spotthatcar.util.FileUtil;
 
 public class MainActivity extends AppCompatActivity implements GalleryFragment.OnListFragmentInteractionListener {
 
@@ -41,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements GalleryFragment.O
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+
+    private Uri mFileUri;
+    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,13 +71,16 @@ public class MainActivity extends AppCompatActivity implements GalleryFragment.O
         tabLayout.setupWithViewPager(mViewPager);
 
         FloatingActionButton camera_fab = (FloatingActionButton) findViewById(R.id.camera_fab);
-        camera_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        if (camera_fab != null) {
+            camera_fab.setOnClickListener(view -> {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                mFileUri = FileUtil.getOutputImageFileUri(); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, mFileUri); // set the image file name
+
+                // start the image capture Intent
+                startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            });
+        }
 
         String[] perms = {"android.permission.WRITE_EXTERNAL_STORAGE"};
 
@@ -78,6 +91,30 @@ public class MainActivity extends AppCompatActivity implements GalleryFragment.O
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Image captured and saved to fileUri specified in the Intent
+                galleryAddPic(mFileUri);
+
+                Intent intent = new Intent(this, CarDetailActivity.class);
+                intent.putExtra(CarDetailActivity.IMAGE_PATH_URI, mFileUri.toString());
+
+                startActivity(intent);
+            } else if (resultCode == RESULT_CANCELED) {
+                // User cancelled the image capture
+            } else {
+                // Image capture failed, advise user
+            }
+        }
+    }
+
+    private void galleryAddPic(Uri contentUri) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
