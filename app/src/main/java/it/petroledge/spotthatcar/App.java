@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
+import com.jakewharton.picasso.OkHttp3Downloader;
+import okhttp3.OkHttpClient;
+import com.squareup.picasso.Picasso;
 import com.vincentbrison.openlibraries.android.dualcache.lib.DualCacheContextUtils;
 import com.vincentbrison.openlibraries.android.dualcache.lib.DualCacheLogUtils;
 
@@ -24,6 +27,7 @@ public class App extends Application {
 
     private ApiManager mApiManager;
     private EventBus mBus = EventBus.getDefault();
+    private Picasso mPicasso;
 
     public static int VERSION_CODE;
 
@@ -36,9 +40,7 @@ public class App extends Application {
 
         sContext = getApplicationContext();
 
-        mApiManager = new ApiManager(mBus, buildApi());
-        mBus.register(mApiManager);
-        mBus.register(this);
+
 
         DualCacheLogUtils.enableLog();
         DualCacheContextUtils.setContext(getApplicationContext());
@@ -50,14 +52,28 @@ public class App extends Application {
         }
         catch (PackageManager.NameNotFoundException ex) {}
 
-    }
+        OkHttpClient client = new OkHttpClient.Builder()
+                .build();
 
-    private IApis buildApi() {
-        return new Retrofit.Builder()
-                .baseUrl("http://192.168.1.159:8000")
+        IApis IApis = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.72:8000")
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
                 .build()
                 .create(IApis.class);
+
+        Picasso.Builder picassoBuilder = new Picasso.Builder(sContext)
+                .downloader(new OkHttp3Downloader(client));
+
+        mPicasso = picassoBuilder.build();
+        mPicasso.setIndicatorsEnabled(true);
+        mPicasso.setLoggingEnabled(true);
+        Picasso.setSingletonInstance(mPicasso);
+
+        mApiManager = new ApiManager(mBus, IApis);
+        mBus.register(mApiManager);
+        mBus.register(this);
+
     }
 
     @Subscribe
