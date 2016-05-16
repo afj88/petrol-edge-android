@@ -24,7 +24,6 @@ import it.petroledge.spotthatcar.ui.adapter.CarsMapAdapter;
 public class ExtendedMapFragment extends SupportMapFragment{
 
     private CarsMapAdapter mCarsMapAdapter;
-//    private OnFragmentInteractionListener mListener;
 
     public ExtendedMapFragment() {
     }

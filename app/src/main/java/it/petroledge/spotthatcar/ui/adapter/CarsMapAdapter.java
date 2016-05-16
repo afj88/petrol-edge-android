@@ -61,15 +61,11 @@ public class CarsMapAdapter implements OnMapReadyCallback, GoogleMap.InfoWindowA
 
     @Subscribe
     public void onLoadedCarsEvent(LoadedCarsEvent event) {
-
         mCarEntityList = event.getPhotos();
-
         drawOnMap();
-
     }
 
     private void drawOnMap() {
-
         if (mIsMapReady && mCarEntityList != null) {
             mMarkerIdsMap = new HashMap<>();
             mMap.clear();

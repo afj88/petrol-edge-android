@@ -56,7 +56,7 @@ public class App extends Application {
                 .build();
 
         IApis IApis = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.72:8000")
+                .baseUrl("http://192.168.1.77:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
